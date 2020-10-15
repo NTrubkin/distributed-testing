@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.nntu.distributed-testing</groupId>
+    <artifactId>distributed-testing</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1</version>
+
+    <modules>
+        <module>master-node</module>
+        <module>worker-node</module>
+        <module>maven-client</module>
+        <module>common</module>
+        <module>prototype</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.14</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>4.1.52.Final</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
