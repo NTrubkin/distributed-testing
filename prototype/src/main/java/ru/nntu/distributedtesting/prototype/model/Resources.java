@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Resources {
+public class Resources implements MessageBody {
 
     private List<File> files;
 }

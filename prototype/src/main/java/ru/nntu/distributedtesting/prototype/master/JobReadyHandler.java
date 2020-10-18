@@ -1,6 +1,18 @@
 package ru.nntu.distributedtesting.prototype.master;
 
-public class JobReadyHandler {
+import io.netty.channel.Channel;
+import lombok.RequiredArgsConstructor;
+import ru.nntu.distributedtesting.prototype.Handler;
+import ru.nntu.distributedtesting.prototype.model.JobResult;
+import ru.nntu.distributedtesting.prototype.model.MessageContainer;
 
-    // todo: implement this
+@RequiredArgsConstructor
+public class JobReadyHandler implements Handler {
+
+    @Override
+    public void handle(MessageContainer container, Channel channel) {
+        JobResult body = (JobResult) container.getBody();
+
+        System.out.println(body.isSuccess() ? "Job success" : "Job failed");
+    }
 }

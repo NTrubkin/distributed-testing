@@ -9,8 +9,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import java.util.concurrent.CopyOnWriteArraySet;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ru.nntu.distributedtesting.prototype.NettyHandler;
+import lombok.Setter;
+import ru.nntu.distributedtesting.prototype.RootHandler;
 
 @RequiredArgsConstructor
 public class Server {
@@ -18,6 +21,13 @@ public class Server {
     private final int port;
     private final EventLoopGroup parentGroup = new NioEventLoopGroup();
     private final EventLoopGroup childGroup = new NioEventLoopGroup();
+
+    @Setter
+    private RootHandler rootHandler;
+
+    @Getter
+    private final CopyOnWriteArraySet<Channel> clients = new CopyOnWriteArraySet<>();
+
 
     public void start() {
         try {
@@ -27,7 +37,8 @@ public class Server {
                      .childHandler(new ChannelInitializer<SocketChannel>() {
                          @Override
                          public void initChannel(SocketChannel ch) {
-                             ch.pipeline().addLast(new NettyHandler());
+                             ch.pipeline()
+                               .addLast(rootHandler);
                          }
                      })
                      .option(ChannelOption.SO_BACKLOG, 128)

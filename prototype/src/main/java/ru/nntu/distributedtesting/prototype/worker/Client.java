@@ -1,7 +1,7 @@
 package ru.nntu.distributedtesting.prototype.worker;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -9,16 +9,24 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
-import ru.nntu.distributedtesting.prototype.NettyHandler;
+import ru.nntu.distributedtesting.prototype.RootHandler;
 
 @RequiredArgsConstructor
 public class Client {
 
+    private final String host;
     private final int port;
     private final EventLoopGroup group = new NioEventLoopGroup();
-    private ChannelFuture channelFuture;
+
+    @Setter
+    private RootHandler rootHandler;
+
+    @Getter
+    private Channel serverChannel;
 
     @SneakyThrows
     public void start() {
@@ -29,20 +37,14 @@ public class Client {
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 protected void initChannel(SocketChannel socketChannel) {
-                    socketChannel.pipeline().addLast(new NettyHandler());
+                    socketChannel.pipeline()
+                                 .addLast(rootHandler);
                 }
             });
-            channelFuture = bootstrap.connect("127.0.0.1", this.port).sync();
-            channelFuture.channel();
+            ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
+            serverChannel = channelFuture.channel();
         } catch (Exception e) {
             throw new RuntimeException("Client error occurred", e);
-        }
-    }
-
-    public void send(String message) {
-        if (channelFuture != null && channelFuture.isSuccess()) {
-            channelFuture.channel()
-                         .writeAndFlush(Unpooled.wrappedBuffer(message.getBytes()));
         }
     }
 

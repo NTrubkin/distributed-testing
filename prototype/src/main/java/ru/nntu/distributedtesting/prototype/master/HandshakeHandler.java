@@ -1,7 +1,18 @@
 package ru.nntu.distributedtesting.prototype.master;
 
-public class HandshakeHandler {
+import io.netty.channel.Channel;
+import lombok.RequiredArgsConstructor;
+import ru.nntu.distributedtesting.prototype.Handler;
+import ru.nntu.distributedtesting.prototype.model.MessageContainer;
 
-    // todo: implement this
+@RequiredArgsConstructor
+public class HandshakeHandler implements Handler {
 
+    private final Server server;
+
+    @Override
+    public void handle(MessageContainer container, Channel channel) {
+        server.getClients().add(channel);
+        System.out.println("New client connected");
+    }
 }
