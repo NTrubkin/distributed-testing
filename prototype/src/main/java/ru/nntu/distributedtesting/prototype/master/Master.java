@@ -17,7 +17,7 @@ import lombok.Setter;
 import ru.nntu.distributedtesting.prototype.RootHandler;
 
 @RequiredArgsConstructor
-public class Server {
+public class Master {
 
     private final int port;
     private final EventLoopGroup parentGroup = new NioEventLoopGroup();
@@ -27,7 +27,7 @@ public class Server {
     private RootHandler rootHandler;
 
     @Getter
-    private final CopyOnWriteArrayList<Channel> clients = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Channel> workers = new CopyOnWriteArrayList<>();
 
 
     public void start() {

@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -15,37 +14,31 @@ import ru.nntu.distributedtesting.prototype.MessageWriter;
 import ru.nntu.distributedtesting.prototype.model.MessageType;
 import ru.nntu.distributedtesting.prototype.model.Resources;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 public class ResourcesSender {
 
-    private final Server server;
+    private final Master master;
     private final MessageWriter messageWriter;
+    private final String appResDir;
 
     public void send() {
         Resources resources = getResources();
 
-        server.getClients()
-              .forEach(client -> send(resources, client));
+        master.getWorkers()
+              .forEach(worker -> send(resources, worker));
 
-        System.out.println("Resources was sent to the clients");
+        System.out.println("Resources was sent to the workers");
     }
 
     public Resources getResources() {
         var resources = new Resources();
 
-        resources.setBase64MainResources(zipFilesToBase64("C:/Users/trubk/Desktop/dt/input/app-main-res"));
-        resources.setBase64TestResources(zipFilesToBase64("C:/Users/trubk/Desktop/dt/input/app-test-res"));
+        resources.setMainResources(zipFiles(appResDir + "/app-main-res"));
+        resources.setTestResources(zipFiles(appResDir + "/app-test-res"));
 
         return resources;
-    }
-
-    private String zipFilesToBase64(String source) {
-        byte[] mainRes = zipFiles(source);
-        byte[] mainBase64Res = Base64.getEncoder().encode(mainRes);
-        return new String(mainBase64Res, UTF_8);
     }
 
     @SneakyThrows

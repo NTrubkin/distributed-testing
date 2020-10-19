@@ -7,11 +7,11 @@ import ru.nntu.distributedtesting.prototype.model.MessageType;
 @RequiredArgsConstructor
 public class HandshakeSender {
 
-    private final Client client;
+    private final Worker worker;
     private final MessageWriter messageWriter;
 
     public void send() {
-        messageWriter.write(MessageType.HANDSHAKE, client.getServerChannel());
+        messageWriter.write(MessageType.HANDSHAKE, worker.getMasterChannel());
         System.out.println("Handshake was sent");
     }
 }

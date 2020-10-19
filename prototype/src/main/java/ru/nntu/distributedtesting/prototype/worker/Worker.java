@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.prototype.RootHandler;
 
 @RequiredArgsConstructor
-public class Client {
+public class Worker {
 
     private final String host;
     private final int port;
@@ -27,7 +27,7 @@ public class Client {
     private RootHandler rootHandler;
 
     @Getter
-    private Channel serverChannel;
+    private Channel masterChannel;
 
     @SneakyThrows
     public void start() {
@@ -46,7 +46,7 @@ public class Client {
                 }
             });
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
-            serverChannel = channelFuture.channel();
+            masterChannel = channelFuture.channel();
         } catch (Exception e) {
             throw new RuntimeException("Client error occurred", e);
         }

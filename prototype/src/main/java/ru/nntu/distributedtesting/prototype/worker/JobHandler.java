@@ -18,6 +18,7 @@ import ru.nntu.distributedtesting.prototype.model.MessageContainer;
 public class JobHandler implements ChildHandler {
 
     private final JobReadySender jobReadySender;
+    private final String workerDir;
 
     @Override
     @SneakyThrows
@@ -39,10 +40,12 @@ public class JobHandler implements ChildHandler {
                                   .startsWith("windows");
         if (isWindows) {
             var command = "java -cp " +
-                    "\"C:\\Users\\trubk\\Desktop\\dt\\worker\\prototype-test-runner.jar;" +
-                    "C:\\Users\\trubk\\Desktop\\dt\\worker\\app-main-resources.jar;" +
-                    "C:\\Users\\trubk\\Desktop\\dt\\worker\\app-test-resources.jar" +
-                    "\" ru.nntu.prototypetestrunner.TestRunnerApp " +
+                    "\"" +
+                    workerDir +"\\prototype-test-runner.jar;" +
+                    workerDir +"\\app-main-resources.jar;" +
+                    workerDir +"\\app-test-resources.jar" +
+                    "\"" +
+                    " ru.nntu.prototypetestrunner.TestRunnerApp " +
                     String.join(" ", testClasses);
             process = Runtime.getRuntime()
                              .exec(command);

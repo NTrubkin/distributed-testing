@@ -4,7 +4,6 @@ import io.netty.channel.Channel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.prototype.ChildHandler;
@@ -16,6 +15,7 @@ import ru.nntu.distributedtesting.prototype.model.Resources;
 public class ResourcesHandler implements ChildHandler {
 
     private final ResourcesReadySender resourcesReadySender;
+    private final String workerDir;
 
     @Override
     public void handle(MessageContainer container, Channel channel) {
@@ -23,8 +23,8 @@ public class ResourcesHandler implements ChildHandler {
             return;
         }
         Resources resources = (Resources) container.getBody();
-        saveBase64Zip(resources.getBase64MainResources(), "C:/Users/trubk/Desktop/dt/worker/app-main-resources.jar");
-        saveBase64Zip(resources.getBase64TestResources(), "C:/Users/trubk/Desktop/dt/worker/app-test-resources.jar");
+        saveZip(resources.getMainResources(), workerDir + "/app-main-resources.jar");
+        saveZip(resources.getTestResources(), workerDir + "/app-test-resources.jar");
 
         System.out.println("Resources received");
 
@@ -32,8 +32,7 @@ public class ResourcesHandler implements ChildHandler {
     }
 
     @SneakyThrows
-    public void saveBase64Zip(String base64Archive, String target) {
-        byte[] archive = Base64.getDecoder().decode(base64Archive.getBytes());
+    public void saveZip(byte[] archive, String target) {
         Path path = Paths.get(target);
         Files.write(path, archive);
     }

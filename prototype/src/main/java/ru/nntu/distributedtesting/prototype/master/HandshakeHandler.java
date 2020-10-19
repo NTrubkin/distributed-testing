@@ -8,11 +8,17 @@ import ru.nntu.distributedtesting.prototype.model.MessageContainer;
 @RequiredArgsConstructor
 public class HandshakeHandler implements ChildHandler {
 
-    private final Server server;
+    private final Master master;
+    private final int workersRequired;
+    private final ResourcesSender sender;
 
     @Override
     public void handle(MessageContainer container, Channel channel) {
-        server.getClients().add(channel);
-        System.out.println("New client connected");
+        master.getWorkers().add(channel);
+        System.out.println("New worker connected");
+
+        if (master.getWorkers().size() == workersRequired) {
+            sender.send();
+        }
     }
 }

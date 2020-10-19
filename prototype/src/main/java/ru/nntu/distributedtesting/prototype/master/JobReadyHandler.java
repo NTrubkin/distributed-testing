@@ -9,10 +9,14 @@ import ru.nntu.distributedtesting.prototype.model.MessageContainer;
 @RequiredArgsConstructor
 public class JobReadyHandler implements ChildHandler {
 
+    private final Master master;
+
     @Override
     public void handle(MessageContainer container, Channel channel) {
         JobResult body = (JobResult) container.getBody();
-
-        System.out.println(body.isSuccess() ? "Job success" : "Job failed");
+        int workerId = master.getWorkers().indexOf(channel);
+        System.out.println(body.isSuccess() ?
+                "Job " + workerId + " success" :
+                "Job " + workerId + " failed");
     }
 }
