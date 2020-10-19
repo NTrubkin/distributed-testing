@@ -16,17 +16,17 @@ import ru.nntu.distributedtesting.prototype.model.MessageType;
 public class RootHandler extends ChannelInboundHandlerAdapter {
 
     @Getter
-    private final Map<MessageType, Handler> handlers = new ConcurrentHashMap<>();
+    private final Map<MessageType, ChildHandler> handlers = new ConcurrentHashMap<>();
     private final MessageReader messageReader;
 
     @Override
     public void channelRead(ChannelHandlerContext context, Object message) {
         MessageContainer container = messageReader.read((ByteBuf) message);
 
-        Handler handler = handlers.get(container.getType());
+        ChildHandler childHandler = handlers.get(container.getType());
 
-        if (handler != null) {
-            handler.handle(container, context.channel());
+        if (childHandler != null) {
+            childHandler.handle(container, context.channel());
         }
     }
 }

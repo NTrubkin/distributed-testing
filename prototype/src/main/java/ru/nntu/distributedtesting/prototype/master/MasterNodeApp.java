@@ -20,7 +20,7 @@ public class MasterNodeApp {
 
         var handshakeHandler = new HandshakeHandler(server);
         var jobSender = new JobSender(messageWriter);
-        var resourcesReadyHandler = new ResourcesReadyHandler(jobSender);
+        var resourcesReadyHandler = new ResourcesReadyHandler(server, jobSender);
         var jobReadyHandler = new JobReadyHandler();
 
         RootHandler rootHandler = new RootHandler(messageReader);

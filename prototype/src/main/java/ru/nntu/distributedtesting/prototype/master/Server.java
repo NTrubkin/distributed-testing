@@ -6,10 +6,11 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.FixedRecvByteBufAllocator;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class Server {
     private RootHandler rootHandler;
 
     @Getter
-    private final CopyOnWriteArraySet<Channel> clients = new CopyOnWriteArraySet<>();
+    private final CopyOnWriteArrayList<Channel> clients = new CopyOnWriteArrayList<>();
 
 
     public void start() {
@@ -39,6 +40,9 @@ public class Server {
                          public void initChannel(SocketChannel ch) {
                              ch.pipeline()
                                .addLast(rootHandler);
+
+                             // todo: remove this prototype hack
+                             ch.config().setRecvByteBufAllocator(new FixedRecvByteBufAllocator(1000000));
                          }
                      })
                      .option(ChannelOption.SO_BACKLOG, 128)

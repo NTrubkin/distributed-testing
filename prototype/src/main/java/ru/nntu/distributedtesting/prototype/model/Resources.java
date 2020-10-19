@@ -1,10 +1,11 @@
 package ru.nntu.distributedtesting.prototype.model;
 
-import java.util.List;
 import lombok.Data;
 
 @Data
 public class Resources implements MessageBody {
 
-    private List<File> files;
+    // todo: try jackson default base64 encoding
+    private String base64MainResources;
+    private String base64TestResources;
 }
