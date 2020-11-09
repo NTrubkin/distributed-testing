@@ -2,9 +2,9 @@ package ru.nntu.distributedtesting.prototype.master;
 
 import io.netty.channel.Channel;
 import lombok.RequiredArgsConstructor;
-import ru.nntu.distributedtesting.prototype.ChildHandler;
-import ru.nntu.distributedtesting.prototype.model.JobResult;
-import ru.nntu.distributedtesting.prototype.model.MessageContainer;
+import ru.nntu.distributedtesting.common.ChildHandler;
+import ru.nntu.distributedtesting.common.model.JobResult;
+import ru.nntu.distributedtesting.common.model.MessageContainer;
 
 @RequiredArgsConstructor
 public class JobReadyHandler implements ChildHandler {

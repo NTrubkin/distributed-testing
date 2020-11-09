@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype.model;
+package ru.nntu.distributedtesting.common.model;
 
 import java.util.List;
 import lombok.Data;

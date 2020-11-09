@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype;
+package ru.nntu.distributedtesting.common;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ru.nntu.distributedtesting.prototype.model.MessageContainer;
-import ru.nntu.distributedtesting.prototype.model.MessageType;
+import ru.nntu.distributedtesting.common.model.MessageContainer;
+import ru.nntu.distributedtesting.common.model.MessageType;
 
 @RequiredArgsConstructor
 @Sharable

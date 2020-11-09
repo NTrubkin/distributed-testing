@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype.worker;
+package ru.nntu.distributedtesting.prototypemavenplugin;
 
 import io.netty.channel.Channel;
 import java.io.BufferedReader;

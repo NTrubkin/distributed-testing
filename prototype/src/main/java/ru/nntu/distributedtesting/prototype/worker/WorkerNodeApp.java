@@ -1,10 +1,10 @@
 package ru.nntu.distributedtesting.prototype.worker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.nntu.distributedtesting.prototype.MessageReader;
-import ru.nntu.distributedtesting.prototype.MessageWriter;
-import ru.nntu.distributedtesting.prototype.RootHandler;
-import ru.nntu.distributedtesting.prototype.model.MessageType;
+import ru.nntu.distributedtesting.common.MessageReader;
+import ru.nntu.distributedtesting.common.MessageWriter;
+import ru.nntu.distributedtesting.common.RootHandler;
+import ru.nntu.distributedtesting.common.model.MessageType;
 
 public class WorkerNodeApp {
 

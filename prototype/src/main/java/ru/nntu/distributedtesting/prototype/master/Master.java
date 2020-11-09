@@ -14,7 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import ru.nntu.distributedtesting.prototype.RootHandler;
+import ru.nntu.distributedtesting.common.RootHandler;
+import ru.nntu.distributedtesting.common.model.Resources;
 
 @RequiredArgsConstructor
 public class Master {
@@ -28,6 +29,10 @@ public class Master {
 
     @Getter
     private final CopyOnWriteArrayList<Channel> workers = new CopyOnWriteArrayList<>();
+
+    @Getter
+    @Setter
+    private Resources currentJobResources;
 
 
     public void start() {

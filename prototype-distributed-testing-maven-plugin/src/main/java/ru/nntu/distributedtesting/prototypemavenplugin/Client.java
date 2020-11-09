@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype.worker;
+package ru.nntu.distributedtesting.prototypemavenplugin;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.common.RootHandler;
 
 @RequiredArgsConstructor
-public class Worker {
+public class Client {
 
     private final String host;
     private final int port;
@@ -48,7 +48,7 @@ public class Worker {
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
             masterChannel = channelFuture.channel();
         } catch (Exception e) {
-            throw new RuntimeException("Worker error occurred", e);
+            throw new RuntimeException("Client error occurred", e);
         }
     }
 
