@@ -9,5 +9,5 @@ public enum MessageType {
     JOB,
     JOB_READY,
     RESOURCES_FROM_CLIENT,
-    REPORT
+    TASK_REPORT
 }

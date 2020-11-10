@@ -19,7 +19,7 @@ public class ResourcesFromClientHandler implements ChildHandler {
     @SneakyThrows
     public void handle(MessageContainer container, Channel channel) {
         System.out.println("Resources from client received");
-        master.setCurrentJobResources((Resources) container.getBody());
+        master.registerClient(channel, (Resources)container.getBody());
         sender.send(master.getCurrentJobResources());
     }
 }

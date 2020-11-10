@@ -10,6 +10,7 @@ import io.netty.channel.FixedRecvByteBufAllocator;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,9 @@ public class Client {
 
     @Getter
     private Channel masterChannel;
+
+    @Getter
+    private boolean isTaskSuccess = false;
 
     @SneakyThrows
     public void start() {
@@ -54,5 +58,16 @@ public class Client {
 
     public void stop() {
         group.shutdownGracefully();
+    }
+
+    @SneakyThrows
+    public void awaitTermination() {
+        // can't find awaitTermination without timeout
+        group.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+    }
+
+    public void finishTask(boolean isSuccess) {
+        isTaskSuccess = isSuccess;
+        stop();
     }
 }

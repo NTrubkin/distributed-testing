@@ -11,6 +11,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,9 +33,13 @@ public class Master {
     private final CopyOnWriteArrayList<Channel> workers = new CopyOnWriteArrayList<>();
 
     @Getter
-    @Setter
     private Resources currentJobResources;
 
+    @Getter
+    private Channel client;
+
+    private final AtomicBoolean hasFailedJobs = new AtomicBoolean(false);
+    private final AtomicInteger workersFinishedCount = new AtomicInteger(0);
 
     public void start() {
         try {
@@ -64,5 +70,33 @@ public class Master {
     public void stop() {
         childGroup.shutdownGracefully();
         parentGroup.shutdownGracefully();
+    }
+
+    public void registerClient(Channel client, Resources resources) {
+        if (this.client != null) {
+            throw new RuntimeException("Cluster is already in use");
+        }
+
+        this.client = client;
+        hasFailedJobs.set(false);
+        workersFinishedCount.set(0);
+        currentJobResources = resources;
+    }
+
+    public void finishJob(boolean isSuccess) {
+        hasFailedJobs.set(hasFailedJobs.get() || !isSuccess);
+        workersFinishedCount.incrementAndGet();
+    }
+
+    public boolean isTaskFinished() {
+        return workers.size() == workersFinishedCount.get();
+    }
+
+    public boolean isTaskSuccess() {
+        return !hasFailedJobs.get();
+    }
+
+    public void closeTask() {
+        client = null;
     }
 }

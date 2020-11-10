@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.common.ChildHandler;
 import ru.nntu.distributedtesting.common.model.Job;
-import ru.nntu.distributedtesting.common.model.JobResult;
+import ru.nntu.distributedtesting.common.model.JobReport;
 import ru.nntu.distributedtesting.common.model.MessageContainer;
 
 @RequiredArgsConstructor
@@ -27,9 +27,9 @@ public class JobHandler implements ChildHandler {
 
         boolean isJobSuccess = runJob(body.getTestClasses());
 
-        var jobResult = new JobResult();
-        jobResult.setSuccess(isJobSuccess);
-        jobReadySender.send(jobResult, channel);
+        var jobReport = new JobReport();
+        jobReport.setSuccess(isJobSuccess);
+        jobReadySender.send(jobReport, channel);
     }
 
     @SneakyThrows
