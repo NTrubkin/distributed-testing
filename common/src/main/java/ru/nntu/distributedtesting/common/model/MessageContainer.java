@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype.model;
+package ru.nntu.distributedtesting.common.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -16,7 +16,8 @@ public class MessageContainer {
     @JsonSubTypes({
             @Type(value = Resources.class, name = "RESOURCES"),
             @Type(value = Job.class, name = "JOB"),
-            @Type(value = JobResult.class, name = "JOB_READY"),
+            @Type(value = JobReport.class, name = "JOB_READY"),
+            @Type(value = TaskReport.class, name = "TASK_REPORT"),
     })
     private MessageBody body;
 }

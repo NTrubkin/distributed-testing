@@ -1,10 +1,10 @@
-package ru.nntu.distributedtesting.prototype;
+package ru.nntu.distributedtesting.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import ru.nntu.distributedtesting.prototype.model.MessageContainer;
+import ru.nntu.distributedtesting.common.model.MessageContainer;
 
 @RequiredArgsConstructor
 public class MessageReader {

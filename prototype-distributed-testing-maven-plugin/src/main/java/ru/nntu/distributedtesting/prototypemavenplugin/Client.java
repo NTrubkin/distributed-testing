@@ -1,4 +1,4 @@
-package ru.nntu.distributedtesting.prototype.worker;
+package ru.nntu.distributedtesting.prototypemavenplugin;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -10,6 +10,7 @@ import io.netty.channel.FixedRecvByteBufAllocator;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.common.RootHandler;
 
 @RequiredArgsConstructor
-public class Worker {
+public class Client {
 
     private final String host;
     private final int port;
@@ -28,6 +29,9 @@ public class Worker {
 
     @Getter
     private Channel masterChannel;
+
+    @Getter
+    private boolean isTaskSuccess = false;
 
     @SneakyThrows
     public void start() {
@@ -48,11 +52,22 @@ public class Worker {
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
             masterChannel = channelFuture.channel();
         } catch (Exception e) {
-            throw new RuntimeException("Worker error occurred", e);
+            throw new RuntimeException("Client error occurred", e);
         }
     }
 
     public void stop() {
         group.shutdownGracefully();
+    }
+
+    @SneakyThrows
+    public void awaitTermination() {
+        // can't find awaitTermination without timeout
+        group.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+    }
+
+    public void finishTask(boolean isSuccess) {
+        isTaskSuccess = isSuccess;
+        stop();
     }
 }

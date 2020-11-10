@@ -2,17 +2,17 @@ package ru.nntu.distributedtesting.prototype.worker;
 
 import io.netty.channel.Channel;
 import lombok.RequiredArgsConstructor;
-import ru.nntu.distributedtesting.prototype.MessageWriter;
-import ru.nntu.distributedtesting.prototype.model.JobResult;
-import ru.nntu.distributedtesting.prototype.model.MessageType;
+import ru.nntu.distributedtesting.common.MessageWriter;
+import ru.nntu.distributedtesting.common.model.JobReport;
+import ru.nntu.distributedtesting.common.model.MessageType;
 
 @RequiredArgsConstructor
 public class JobReadySender {
 
     private final MessageWriter messageWriter;
 
-    public void send(JobResult jobResult, Channel channel) {
-        messageWriter.write(MessageType.JOB_READY, jobResult, channel);
-        System.out.println("Job result was sent");
+    public void send(JobReport jobReport, Channel channel) {
+        messageWriter.write(MessageType.JOB_READY, jobReport, channel);
+        System.out.println("Job report was sent to the master");
     }
 }

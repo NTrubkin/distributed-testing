@@ -1,8 +1,8 @@
 package ru.nntu.distributedtesting.prototype.worker;
 
 import lombok.RequiredArgsConstructor;
-import ru.nntu.distributedtesting.prototype.MessageWriter;
-import ru.nntu.distributedtesting.prototype.model.MessageType;
+import ru.nntu.distributedtesting.common.MessageWriter;
+import ru.nntu.distributedtesting.common.model.MessageType;
 
 @RequiredArgsConstructor
 public class ResourcesReadySender {

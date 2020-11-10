@@ -6,16 +6,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import ru.nntu.distributedtesting.common.ChildHandler;
 import ru.nntu.distributedtesting.common.model.MessageContainer;
+import ru.nntu.distributedtesting.common.model.Resources;
 
 @RequiredArgsConstructor
 @Sharable
-public class ResourcesReadyHandler implements ChildHandler {
+public class ResourcesFromClientHandler implements ChildHandler {
 
-    private final JobSender jobSender;
+    private final ResourcesSender sender;
+    private final Master master;
 
     @Override
     @SneakyThrows
     public void handle(MessageContainer container, Channel channel) {
-        jobSender.send(channel);
+        System.out.println("Resources from client received");
+        master.registerClient(channel, (Resources)container.getBody());
+        sender.send(master.getCurrentJobResources());
     }
 }

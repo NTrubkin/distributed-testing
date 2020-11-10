@@ -1,15 +1,14 @@
 package ru.nntu.distributedtesting.prototype.master;
 
 import io.netty.channel.Channel;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import ru.nntu.distributedtesting.prototype.MessageWriter;
-import ru.nntu.distributedtesting.prototype.model.Job;
-import ru.nntu.distributedtesting.prototype.model.MessageType;
+import ru.nntu.distributedtesting.common.MessageWriter;
+import ru.nntu.distributedtesting.common.Utils;
+import ru.nntu.distributedtesting.common.model.Job;
+import ru.nntu.distributedtesting.common.model.MessageType;
 
 import static java.util.stream.Collectors.toList;
 
@@ -18,14 +17,11 @@ public class JobSender {
 
     private final Master master;
     private final MessageWriter messageWriter;
-    private final String appResDir;
 
     @SneakyThrows
     public void send(Channel channel) {
-
-        List<String> testClasses = Files.list(Path.of(appResDir + "/app-test-res"))
-                                        .map(Path::getFileName)
-                                        .map(Path::toString)
+        List<String> testClasses = Utils.unzipFilesNames(master.getCurrentJobResources().getTestResources())
+                                        .stream()
                                         .filter(fileName -> fileName.endsWith(".class"))
                                         .map(fileName -> fileName.substring(0, fileName.length() - ".class".length()))
                                         .collect(toList());
